@@ -1,7 +1,7 @@
 {
-	"ctf_name": "Pwn2Win CTF 2017",
+	"ctf_name": "Playground",
 	"repository_host": "GitHub",
-	"submissions_project": "pwn2winctf/2017submissions",
+	"submissions_project": "pwn2winctf/test_submissions",
 
 	"scrypt_ops_limit": 33554432,
 	"scrypt_mem_limit": 1073741824,
