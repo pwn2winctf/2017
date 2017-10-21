@@ -65,7 +65,7 @@ class AcceptedSubmissions(SerializableDict):
         for i, standing in enumerate(standings):
             standing['pos'] = i + 1
 
-    def add(self, chall, team):
+    def add(self, chall, team, accepted_time=None):
         chall_id = chall.id
         team_name = team['name']
 
@@ -78,10 +78,11 @@ class AcceptedSubmissions(SerializableDict):
             # Challenge already submitted by team
             return
 
-        accepted_time = int(time.time())
+        accepted_time = accepted_time or int(time.time())
         team_standing['taskStats'][chall_id] = {'points': 0,
                                                 'time': accepted_time}
-        team_standing['lastAccept'] = accepted_time
+        team_standing['lastAccept'] = max(task['time'] for task in
+                                          team_standing['taskStats'].values())
 
         self.recompute_score(chall)
         self.rank()

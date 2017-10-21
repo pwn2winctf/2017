@@ -10,7 +10,7 @@ import argparse
 import getpass
 import base64
 
-from nizkctf.cli import scoreboard, challenges, news, team, localserver
+from nizkctf.cli import scoreboard, challenges, news, team, localserver, accept
 from nizkctf.repohost import RepoHost
 from nizkctf.subrepo import SubRepo
 from nizkctf.challenge import Challenge, derive_keypair, random_salt
@@ -155,6 +155,10 @@ def cmd_add_challenge(args):
     chall.save()
 
 
+def cmd_accept(args):
+    accept.accept(args.team, args.proof, args.time)
+
+
 def cmd_news(args):
     if args.pull:
         SubRepo.pull()
@@ -180,6 +184,7 @@ def main():
         'serve': cmd_serve,
 
         'add': cmd_add_challenge,
+        'accept': cmd_accept,
 
         'news': cmd_news,
         'add_news': cmd_add_news,
@@ -244,6 +249,15 @@ def main():
 
     parser_add_challenge = subparsers.add_parser('add')
     parser_add_challenge.set_defaults(command='add')
+
+    parser_accept = subparsers.add_parser('accept')
+    parser_accept.set_defaults(command='accept')
+    parser_accept.add_argument('--team', required=True, type=str,
+                               metavar='TEAM', help='team id')
+    parser_accept.add_argument('--proof', required=True, type=str,
+                               metavar='PROOF', help='submitted proof')
+    parser_accept.add_argument('--time', required=True, type=str,
+                               metavar='TIME', help='submission ISO time')
 
     parser_news = subparsers.add_parser('news', help='pull and show news')
     parser_news.set_defaults(command='news')
